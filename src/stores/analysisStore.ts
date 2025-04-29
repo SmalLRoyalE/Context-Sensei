@@ -49,7 +49,23 @@ export const useAnalysisStore = create<AnalysisStore>((set) => ({
     set({ isLoading: true });
     try {
       const result = await mockAnalyzeTranscript(transcript);
-      set({ analysis: result });
+      // Transform AnalysisResult to Analysis
+      const analysis: Analysis = {
+        id: result.id || Date.now().toString(),
+        title: result.title || 'Analysis Result',
+        content: transcript.content,
+        summary: result.summary,
+        actionItems: result.actionItems.map(item => ({
+          key: item.task,
+          value: item.assignee
+        })),
+        keyPoints: result.keyPoints.map(point => ({
+          key: point,
+          value: ''
+        })),
+        createdAt: new Date().toISOString()
+      };
+      set({ analysis });
     } catch (error) {
       console.error('Error analyzing transcript:', error);
     } finally {

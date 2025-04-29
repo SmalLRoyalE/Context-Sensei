@@ -27,20 +27,15 @@ export interface TaskTable {
 }
 
 export interface AnalysisResult {
-  id: string;
-  transcriptId: string;
+  id?: string;
+  title?: string;
   summary: string;
-  keyDecisions: string[];
-  actionItems: ActionItem[];
-  taskTable?: TaskTable;
-  entities?: {
-    people: string[];
-    organizations: string[];
-    dates: string[];
-    topics: string[];
-  };
-  createdAt: string;
-  updatedAt?: string;
+  actionItems: Array<{
+    task: string;
+    assignee: string;
+  }>;
+  keyPoints: string[];
+  createdAt?: string;
 }
 
 export interface AnalysisRequest {
