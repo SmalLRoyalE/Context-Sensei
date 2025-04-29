@@ -1,34 +1,21 @@
 // vite.config.ts
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import { fileURLToPath } from 'url';
-import { dirname, resolve } from 'path';
+import path from 'path';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
+// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      '@': resolve(__dirname, './src'),
-      '@components': resolve(__dirname, './src/components'),
-      '@pages': resolve(__dirname, './src/pages'),
-      '@stores': resolve(__dirname, './src/stores'),
-      '@utils': resolve(__dirname, './src/utils'),
-      '@types': resolve(__dirname, './src/types'),
-      '@services': resolve(__dirname, './src/services'),
-      '@hooks': resolve(__dirname, './src/hooks'),
-      '@assets': resolve(__dirname, './src/assets')
+      '@': path.resolve(__dirname, './src'),
     },
   },
   server: {
     port: 3000,
-    proxy: {
-      '/api': {
-        target: 'http://localhost:8000',
-        changeOrigin: true,
-      },
-    },
+  },
+  build: {
+    outDir: 'dist',
+    sourcemap: true,
   },
 });
