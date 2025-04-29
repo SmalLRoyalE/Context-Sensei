@@ -119,6 +119,8 @@ interface EditableTask extends Task {
   isEditing?: boolean;
 }
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+
 const Home: React.FC = () => {
   const [fileContent, setFileContent] = useState<FileContent | null>(null);
   const [editedContent, setEditedContent] = useState<string>('');
@@ -179,12 +181,12 @@ const Home: React.FC = () => {
         throw new Error('Please enter some text to analyze.');
       }
 
-      const response = await fetch('http://localhost:3001/api/analyze', {
+      const response = await fetch(`${API_URL}/api/analyze`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ text: editedContent })
       }).catch(err => {
-        throw new Error('Cannot connect to server. Please make sure the server is running on port 3001.');
+        throw new Error('Cannot connect to server. Please make sure the server is running.');
       });
 
       if (!response.ok) {
@@ -233,7 +235,7 @@ const Home: React.FC = () => {
 
   const handleDownloadResults = async (format: 'txt' | 'docx' | 'xlsx' | 'pdf') => {
     try {
-      const response = await fetch(`http://localhost:3001/api/export/${format}`, {
+      const response = await fetch(`${API_URL}/api/export/${format}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -401,7 +403,7 @@ const Home: React.FC = () => {
   // Update the handleUpdatePriority function with null checks
   const handleUpdatePriority = async (taskId: string, newPriority: 'High' | 'Medium' | 'Low' | undefined) => {
     try {
-      const response = await fetch(`http://localhost:3001/api/tasks/${taskId}`, {
+      const response = await fetch(`${API_URL}/api/tasks/${taskId}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ priority: newPriority })
