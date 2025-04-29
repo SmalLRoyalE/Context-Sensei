@@ -1,13 +1,13 @@
 // src/stores/transcriptStore.ts
 import { create } from 'zustand';
-import { Transcript } from '@types/transcript';
+import type { Transcript } from '../types/transcript';
 
 interface TranscriptState {
   transcript: Transcript | null;
   recentTranscripts: Transcript[];
   isLoading: boolean;
   error: string | null;
-  setTranscript: (transcript: Transcript) => void;
+  setTranscript: (transcript: Transcript | null) => void;
   updateTranscript: (transcript: Transcript) => void;
   addToRecent: (transcript: Transcript) => void;
   clearTranscript: () => void;
@@ -21,8 +21,7 @@ export const useTranscriptStore = create<TranscriptState>((set) => ({
   isLoading: false,
   error: null,
   
-  setTranscript: (transcript: Transcript) => 
-    set({ transcript, error: null }),
+  setTranscript: (transcript) => set({ transcript }),
   
   updateTranscript: (updatedTranscript: Transcript) =>
     set((state) => {
